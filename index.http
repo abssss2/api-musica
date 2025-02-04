@@ -1,0 +1,30 @@
+GET http://localhost:3000/api/instruments/ HTTP/1.1
+Content-Type: application/application/json
+###
+POST http://localhost:3000/api/instruments/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "5",
+    "instrumento1": "bateria",
+    "tipo": "instrumento de percusion",
+    "descripcion": "produce sonidos al golpear tambores y platillos con palillos"
+  }
+
+###
+
+PUT http://localhost:3000/api/instruments/4 HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "5",
+    "instrumento": "arpa",
+    "tipo": "instrumento de cuerdas",
+    "descripcion": "produce sonidos al pulsar las cuerdas"
+  }
+
+###
+
+
+DELETE http://localhost:3000/api/instruments/1 HTTP/1.1
+Content-Type: application/json

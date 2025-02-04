@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Instruments {
+  id            Int                        @id @default(autoincrement())
+  instrument    String                     @db.VarChar(80)
+  type          String                     @db.VarChar(80)
+  description   String                     @db.VarChar(80)
+  createAt      DateTime                   @default(now()) @map("created_at")
+  updateAt      DateTime                   @updatedAt @map("updated_at")
+  usersAssigned UsersAssignedInstruments[]
+
+  @@map("instruments")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id                  Int                        @id @default(autoincrement())
+  email               String                     @unique
+  name                String
+  password            String
+  role                Role                       @default(USER)
+  createAt            DateTime                   @default(now()) @map("created_at")
+  updateAt            DateTime                   @updatedAt @map("updated_at")
+  instrumentsAssigned UsersAssignedInstruments[]
+
+  @@map("users")
+}
+
+model UsersAssignedInstruments {
+  instrument   Instruments @relation(fields: [instrumentId], references: [id])
+  instrumentId Int         @map("instrument_id")
+  user         User        @relation(fields: [userId], references: [id])
+  userId       Int         @map("user_id")
+  createAt     DateTime    @default(now()) @map("created_at")
+  updateAt     DateTime    @updatedAt @map("updated_at")
+
+  @@id([instrumentId, userId])
+  @@map("users_assignated_instruments")
+}
